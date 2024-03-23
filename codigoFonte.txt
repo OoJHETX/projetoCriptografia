@@ -1,0 +1,56 @@
+def determinaOpcao():
+    #Função que pergunta d ou f, e garante o loop do while
+    while True:
+        opcao = input("Deseja Criptografar ou Descriptografar a mensagem ?\n").lower() #lower transforma em minusculo
+        if opcao in 'criptografar c descriptografar d'.split(): #split captura cada caracter digitado e compara
+            return opcao
+        else:
+            print("Digite 'c' ou 'd'.")
+
+def determinaChave():
+
+    chave = 0 #iniciando com zero
+    while True: #Só irá sair do while quando retornar algum valor para função
+        chave =  int(input("Digite o valor de sua chave entre 1-26 (A-Z)\n "))
+        if 1<= chave <=26:
+            return chave
+
+def determinaMensagem(opcao, mensagem, chave):
+
+    #Confere a opção do usuario
+    traduzido = ''
+    if opcao[0] == 'd':
+        chave *= -1
+
+    #Código utilizado para criptografar e descriptografar
+    for letra in mensagem:
+        if letra.isalpha(): #isalpha é utilizado para verificar se está presente no alfabeto comum, tanto em maiusculo e minusculo
+            num = ord(letra) #ord é utilizado para converter a letra em número
+            num += chave #chave recebe e soma com os valores
+            if letra.isupper(): #isupper é pra conferir se é maiusculo a letra
+                if num>ord('Z'):
+                    num-=26
+                elif num<ord('A'):
+                    num+=26
+
+            elif letra.islower(): #islower é pra conferir se é minusculo a letra
+                if num>ord('z'):
+                    num-=26
+                elif num<ord('a'):
+                    num+=26
+            traduzido += chr(num)  #chr é utilizado para converter o número em letra
+
+        else:
+            traduzido += letra # se não for uma letra do alfabeto, irá apresentar a letra descrita pelo usuario
+    return traduzido
+
+def main():
+
+    opcao = determinaOpcao() #chamando metodo opcao
+    mensagem = input("Entre com sua frase:\n")
+    chave = determinaChave() #chamando metodo chave
+    print("Sua frase traduzida é: ")
+    print(determinaMensagem(opcao, mensagem, chave)) #A função irá receber os parametros de acordo com a ordem descrita
+    main()
+
+main()
